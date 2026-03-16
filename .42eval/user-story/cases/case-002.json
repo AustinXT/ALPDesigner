@@ -1,0 +1,15 @@
+{
+  "caseId": "case-002",
+  "caseName": "完整用户故事规格书生成",
+  "prompt": "请基于项目的 real.md、cog.md 和 pr.spec.md，将所有三个 MAS（MAS-1、MAS-2、MAS-3）拆解为完整的用户故事规格书（userstory.spec.md）。产品处于 MVP 阶段。请生成完整文档，包括复杂故事概览、所有最小故事、故事地图和故事类型分布表。",
+  "expectedBehavior": "应生成完整的 userstory.spec.md，包含复杂故事概览表、每个 CS 下的 MS 详情、按迭代组织的故事地图、以及类型分布统计表。",
+  "files": [".42cog/real.md", ".42cog/cog.md", ".42cog/pm/pr.spec.md"],
+  "expectations": [
+    { "id": "exp-1", "description": "Output contains all four required top-level sections: '复杂故事概览' (with a table), at least one CS section for each of the three MAS, '故事地图', and '故事类型分布'", "category": "structure", "critical": true },
+    { "id": "exp-2", "description": "Every MS includes a 故事评判 block with type-specific field labels: 光明→起点/转折/终点, 黑暗→正常态/异变/恢复, 灰色→循环模式/优化点/习惯形成; no MS is missing its judgment block and no type uses the wrong labels", "category": "differential", "critical": true },
+    { "id": "exp-3", "description": "Aggregate type distribution follows MVP golden ratio ~70/20/10 (光明 ≥60%, 灰色 ≤20%)", "category": "differential", "critical": true },
+    { "id": "exp-4", "description": "Constraint references use upstream citations rather than copying text inline", "category": "differential", "critical": false },
+    { "id": "exp-5", "description": "故事地图 uses hierarchical tree structure organized by iteration with CS branches and MS leaves labeled with type", "category": "structure", "critical": false },
+    { "id": "exp-6", "description": "Each MS's 验收标准 contains at least 2 testable criteria specific to ALPDesigner domain", "category": "content", "critical": false }
+  ]
+}

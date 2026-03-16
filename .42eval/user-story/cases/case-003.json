@@ -1,0 +1,15 @@
+{
+  "caseId": "case-003",
+  "caseName": "成长阶段故事类型分布",
+  "prompt": "请基于项目的 real.md、cog.md 和 pr.spec.md，将 MAS-2（调整设计，验证安全）拆解为用户故事。产品已进入成长阶段。",
+  "expectedBehavior": "应根据产品阶段自动适配故事类型分布比例，黑暗和灰色故事占比应高于 MVP 水平。",
+  "files": [".42cog/real.md", ".42cog/cog.md", ".42cog/pm/pr.spec.md"],
+  "expectations": [
+    { "id": "exp-1", "description": "Output explicitly identifies the product stage as 成长阶段 and states the corresponding golden ratio target (50/30/20 or similar non-MVP ratio) in a 类型分布 field or distribution table — without the prompt having specified the ratio numbers", "category": "differential", "critical": true },
+    { "id": "exp-2", "description": "Dark stories (MS-D) constitute ≥25% of total MS count, noticeably higher than an MVP-typical ~20%, with at least 2 dark stories covering MAS-2 failure modes", "category": "differential", "critical": true },
+    { "id": "exp-3", "description": "Each dark story (MS-D) uses the 正常态/异变/恢复 field labels in its 故事评判 section, distinct from 光明 stories' 起点/转折/终点 labels", "category": "differential", "critical": true },
+    { "id": "exp-4", "description": "At least one grey story (MS-G) covering a repetitive efficiency-optimization scenario with 循环模式/优化点/习惯形成 judgment structure", "category": "content", "critical": false },
+    { "id": "exp-5", "description": "Each MS includes a 用户可感知变化 section with 操作前/操作中/操作后 sub-fields", "category": "structure", "critical": false },
+    { "id": "exp-6", "description": "Constraint references use citation format (e.g., '见 real.md §C1') rather than copying constraint text inline", "category": "content", "critical": false }
+  ]
+}

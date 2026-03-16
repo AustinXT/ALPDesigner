@@ -1,0 +1,15 @@
+{
+  "caseId": "case-001",
+  "caseName": "单个 MAS 拆解为用户故事",
+  "prompt": "请基于项目的 real.md、cog.md 和 pr.spec.md，将 MAS-1（描述想法，看到方案）拆解为用户故事。产品处于 MVP 阶段。输出 userstory.spec.md 中 MAS-1 相关部分。",
+  "expectedBehavior": "应识别出复杂故事（CS），并拆解为光明/黑暗/灰色三类最小故事（MS），每个 MS 包含故事评判、用户可感知变化和验收标准。MVP 阶段类型分布应接近 70/20/10。",
+  "files": [".42cog/real.md", ".42cog/cog.md", ".42cog/pm/pr.spec.md"],
+  "expectations": [
+    { "id": "exp-1", "description": "Output contains a CS (Complex Story) block for MAS-1 with all required fields: 描述、用户类型、核心价值、类型分布、包含故事、旅程, derived from MAS-1's affordance sequence rather than generic categories", "category": "structure", "critical": true },
+    { "id": "exp-2", "description": "Each MS includes a 故事评判 section with type-specific field labels: 光明 stories use 起点/转折/终点, 黑暗 stories use 正常态/异变/恢复 (three distinct labels different from 光明), and 灰色 stories use 循环模式/优化点/习惯形成", "category": "differential", "critical": true },
+    { "id": "exp-3", "description": "The MS type distribution across all stories approximates the MVP 70/20/10 golden ratio, with an explicit 类型分布 tally stated in the CS block or 故事类型分布 table", "category": "differential", "critical": true },
+    { "id": "exp-4", "description": "Constraint references use citations to upstream documents (e.g., '见 real.md §C1') rather than copying constraint text inline", "category": "content", "critical": false },
+    { "id": "exp-5", "description": "Each MS includes a 用户可感知变化 section with three sub-fields: 操作前、操作中、操作后 — describing observable user-facing state changes", "category": "content", "critical": true },
+    { "id": "exp-6", "description": "Output includes a 故事地图 section organized by iteration with explicit iteration label and story identifiers in tree structure", "category": "structure", "critical": false }
+  ]
+}

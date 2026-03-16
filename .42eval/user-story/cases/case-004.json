@@ -1,0 +1,15 @@
+{
+  "caseId": "case-004",
+  "caseName": "信息密度与反模式规避",
+  "prompt": "请基于项目的 real.md、cog.md 和 pr.spec.md，将 MAS-3（导出方案，动手组装）拆解为用户故事。请严格遵循信息密度规则：每行通过测试'cog.md + real.md + pr.spec.md + AI 通用知识都不含这个信息吗？'。约束必须用引用而非复制。",
+  "expectedBehavior": "输出应体现高信息密度：约束使用引用格式，不复制上游文档内容，不填充通用知识，故事聚焦用户可感知变化。",
+  "files": [".42cog/real.md", ".42cog/cog.md", ".42cog/pm/pr.spec.md"],
+  "expectations": [
+    { "id": "exp-1", "description": "All constraint fields use reference format (e.g., '见 real.md §C3') rather than copying text from real.md", "category": "differential", "critical": true },
+    { "id": "exp-2", "description": "CS is derived from actual MAS-3 affordance sequence, not generic category names like '导出功能' or '核心功能'", "category": "differential", "critical": true },
+    { "id": "exp-3", "description": "Each MS's 用户可感知变化 describes what user sees/feels, not implementation details (file format internals, JSON schema, CAD engine, WASM)", "category": "content", "critical": true },
+    { "id": "exp-4", "description": "Output includes at least one MS-D (with 正常态/异变/恢复 judgment) and one MS-G (with 循环模式/优化点/习惯形成 judgment)", "category": "structure", "critical": false },
+    { "id": "exp-5", "description": "Each MS has 故事评判 with type-matching field labels: 光明→起点/转折/终点, 黑暗→正常态/异变/恢复, 灰色→循环模式/优化点/习惯形成", "category": "differential", "critical": false },
+    { "id": "exp-6", "description": "No sentences reproduce general industry knowledge (what STEP is, BOM definitions, machining tolerances); every substantive sentence references upstream or asserts ALPDesigner-specific behavior", "category": "quality", "critical": false }
+  ]
+}

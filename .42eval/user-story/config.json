@@ -1,0 +1,85 @@
+{
+  "version": "2.0",
+  "skillName": "user-story",
+  "skillPath": "/Users/nv/proj.xt.com/ALPDesigner/.claude/skills/user-story",
+  "classification": {
+    "quadrant": "mastery",
+    "strategy": "comparison",
+    "modelCapability": "strong",
+    "humanPractice": "best",
+    "modelScore": 90,
+    "practiceScore": 69,
+    "confidence": 0.8,
+    "signals": [
+      {
+        "dimension": "practice",
+        "direction": "weak",
+        "keyword": "最小",
+        "weight": 12
+      },
+      {
+        "dimension": "practice",
+        "direction": "strong",
+        "keyword": "标准",
+        "weight": 10
+      },
+      {
+        "dimension": "model",
+        "direction": "strong",
+        "keyword": "复杂",
+        "weight": 8
+      },
+      {
+        "dimension": "practice",
+        "direction": "strong",
+        "keyword": "测试",
+        "weight": 8
+      },
+      {
+        "dimension": "practice",
+        "direction": "weak",
+        "keyword": "minimal",
+        "weight": 4
+      },
+      {
+        "dimension": "model",
+        "direction": "strong",
+        "keyword": "架构",
+        "weight": 3
+      },
+      {
+        "dimension": "practice",
+        "direction": "strong",
+        "keyword": "错误处理",
+        "weight": 3
+      },
+      {
+        "dimension": "model",
+        "direction": "strong",
+        "keyword": "实现",
+        "weight": 2
+      },
+      {
+        "dimension": "model",
+        "direction": "weak",
+        "keyword": "占位符",
+        "weight": 2
+      },
+      {
+        "dimension": "practice",
+        "direction": "strong",
+        "keyword": "质量",
+        "weight": 2
+      },
+      {
+        "dimension": "practice",
+        "direction": "strong",
+        "keyword": "示例",
+        "weight": 2
+      }
+    ]
+  },
+  "currentIteration": 0,
+  "createdAt": "2026-03-16T14:21:51.341Z",
+  "updatedAt": "2026-03-16T14:45:02.705Z"
+}
