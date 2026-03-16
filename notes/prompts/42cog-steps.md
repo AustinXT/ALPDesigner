@@ -21,41 +21,40 @@
 
 .42cog/real.md
 .42cog/cog.md
+.42cog/meta.md
 
 如有必要，请开多个task加速执行任务。注意：
 
 可能需要在 Write 工具中包含 content 参数
 
-## 4. 生成 .42cog/spec/pm/userstory.spec.md
-
-请使用已经注册好的Claude Skill：.claude/skills/42edu/pm-user-story/SKILL-lite.zh.md
+## 4. 生成 .42cog/pm/userstory.spec.md
 
 注意，生成时参考：
 
 .42cog/real.md
-.42cog/cog/cog.md
+.42cog/cog.md
+.42cog/meta.md
 
 还需要同步参考：
 
-.42cog/spec/pm/pr.spec.md
+.42cog/pm/pr.spec.md
 
 如有必要，请开多个task加速执行任务。注意：
 
 可能需要在 Write 工具中包含 content 参数
 
-## 5. 生成 .42cog/spec/dev/sys.spec.md
-
-请使用已经注册好的Claude Skill：.claude/skills/42edu/dev-system-architecture/SKILL.md
+## 5. 生成 .42cog/dev/sys.spec.md
 
 注意，生成时参考：
 
 .42cog/real.md
-.42cog/cog/cog.md
+.42cog/cog.md
+.42cog/meta.md
 
 还需要同步参考：
 
-.42cog/spec/pm/pr.spec.md
-.42cog/spec/pm/userstory.spec.md
+.42cog/pm/pr.spec.md
+.42cog/pm/userstory.spec.md
 
 如有必要，请开多个task加速执行任务。注意：
 
@@ -83,21 +82,19 @@ AI框架：Vercel AI SDK，参考：https://ai-sdk.dev
 8, Pre-commit Hooks - Husky
 9、Formatting - Prettier
 
-## 6. 生成 .42cog/spec/design/ui.spec.md
-
-请使用已经注册好的 Claude Skill：.claude/skills/42edu/design-ui-design/SKILL.md
+## 6. 生成 .42cog/design/ui.spec.md
 
 注意，生成时参考：
 
 .42cog/meta.md
 .42cog/real.md
-.42cog/cog/cog.md
+.42cog/cog.md
 
 还需要同步参考：
 
-.42cog/spec/pm/pr.spec.md
-.42cog/spec/pm/userstory.spec.md
-.42cog/spec/dev/sys.spec.md
+.42cog/pm/pr.spec.md
+.42cog/pm/userstory.spec.md
+.42cog/dev/sys.spec.md
 
 如有必要，请开多个task加速执行任务。注意：
 
