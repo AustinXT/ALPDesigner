@@ -38,9 +38,9 @@
 </constraint>
 
 <constraint required="true" id="C4">
-<title>WASM 资源加载安全</title>
-<description>OpenCascade WASM 模块体积大（约 20-30MB），必须使用懒加载 + Web Worker 隔离，不得在主线程同步加载。WASM 文件必须通过 CDN 分发并启用 Content-Security-Policy 限制加载源。用户上传的图片必须在前端压缩后传输，不存储原图。</description>
-<rationale>WASM 同步加载会阻塞 UI 导致页面无响应；未限制 WASM 加载源存在供应链攻击风险；用户图片可能包含敏感信息。</rationale>
+<title>客户端加载安全与数据隐私</title>
+<description>OpenCascade WASM 模块必须使用裁剪构建，通过 Web Worker 异步加载，不得在主线程同步加载。WASM 文件必须通过 CDN 分发并启用 Content-Security-Policy 限制加载源。用户上传的图片必须在前端压缩后传输，不存储原图。所有设计数据仅存储在客户端浏览器中。</description>
+<rationale>WASM 同步加载会阻塞 UI 导致页面无响应；未限制 WASM 加载源存在供应链攻击风险（恶意 WASM 可窃取用户数据或执行任意代码）；用户图片和设计数据可能包含敏感信息（产品设计、商业布局等）。</rationale>
 <violation-consequence>页面加载卡死导致用户流失；WASM 被替换为恶意代码；用户隐私数据泄露。</violation-consequence>
 </constraint>
 
@@ -73,13 +73,46 @@
   - 框架：Next.js 16 (App Router) + React 19 + TypeScript
   - 运行时：Bun
   - 3D 渲染：react-three-fiber + @react-three/drei + Three.js
-  - CAD 内核：replicad（基于 OpenCascade WASM，MIT 协议）
+  - CAD 内核：replicad v0.21（OpenCascade.js WASM，MIT 协议）+ CadEngine 抽象接口层
   - AI 服务：Claude API（自然语言理解 + CAD 参数生成）
   - 部署：Vercel（Edge Runtime + Serverless Functions）
   - 数据格式：JSON（型材参数库、设计方案、BOM）
   - 导出格式：STEP（CAD 交换）、STL（3D 预览）、PDF（组装指导）、CSV（材料清单）
 </stack>
 </environment>
+
+## 技术风险与缓解
+
+<risk id="R1" severity="medium">
+<title>CAD 内核单维护者依赖</title>
+<description>replicad 由单人维护（sgenoud），npm 仅 4 个依赖项目，590 stars，仍处于 pre-1.0（v0.21）。如维护者停止投入，项目将停滞。但 replicad 提供了自建成本极高的关键基础设施：WASM 对象 GC 系统、拓扑稳定的 Finder 系统、裁剪后的 WASM 构建。</description>
+<mitigation>
+1. 代码中创建 CadEngine 抽象接口层，封装所有 replicad 调用，使内核可替换
+2. 锁定 npm 版本号（pin replicad@0.21），避免 pre-1.0 API 变更意外破坏
+3. MIT 协议保底：最坏情况可 fork replicad 维护所需子集，成本远低于从零自建
+4. 持续关注 bitbybit-dev/occt 作为备选迁移目标（公司维护，MIT 协议，服务化架构）
+</mitigation>
+</risk>
+
+<risk id="R2" severity="medium">
+<title>WASM + Next.js 集成复杂性</title>
+<description>replicad 依赖 OpenCascade WASM 模块，Next.js 对 WASM 的 webpack 配置和 Web Worker 加载存在已知兼容性问题（SSR 环境无法加载 WASM、动态 import 路径问题等，参见 replicad Discussion #79、#140）。</description>
+<mitigation>
+1. 使用 replicad 自定义 WASM 构建（replicad-opencascadejs）减小体积（约 7-10MB，gzip 后约 2.5-4MB）
+2. 参照社区已解决的 Next.js 集成方案配置 webpack（asyncWebAssembly + worker 加载）
+3. 所有 CAD 计算在 Web Worker 中执行，主线程仅处理渲染和 UI
+</mitigation>
+</risk>
+
+<risk id="R3" severity="low">
+<title>OpenCascade 几何内核局限性</title>
+<description>OpenCascade 的 fillet 操作在复杂场景下可能失败（当 fillet 完全移除相邻面时）；存在拓扑命名问题（TNP）。</description>
+<mitigation>
+1. 铝型材设计以拉伸和简单布尔运算为主，极少触发复杂 fillet 场景
+2. replicad 提供 Finder 系统规避 TNP（通过条件查找而非索引引用边/面）
+3. 如遇 fillet 失败，调整建模策略（分步操作替代单步复杂 fillet）
+</mitigation>
+</risk>
 
 ## 约束检查清单
 

@@ -52,13 +52,13 @@
 
 <agent type="system" id="A3">
 <name>CAD 渲染引擎</name>
-<identifier>replicad WASM + react-three-fiber</identifier>
+<identifier>CadEngine 抽象接口 → replicad（OpenCascade.js WASM）+ react-three-fiber</identifier>
 <classification>
   <by-function>参数化建模（JSON → 3D 几何体）| 交互编辑（拖拽、对齐、约束）| 导出（STEP/STL/PDF）</by-function>
 </classification>
 <interaction-pattern>
   输入：CAD 参数 JSON（设计助手输出 或 用户编辑操作）
-  处理：通过 replicad 生成 B-Rep 几何体 → Three.js 渲染
+  处理：通过 CadEngine 接口调用 replicad 生成 B-Rep 几何体 → Three.js 渲染
   输出：3D 可交互预览、导出文件
 </interaction-pattern>
 </agent>
@@ -91,7 +91,7 @@
   - 表面处理（阳极氧化银白 | 阳极氧化黑 | 喷涂）
 </attributes>
 <relations>
-  - Profile → Connector: 1:N（一种型材可搭配多种兼容连接件）
+  - Profile → Connector: N:N（一种型材可搭配多种兼容连接件，一种连接件也可适配同系列多种截面型材）
   - Profile → DesignElement: 1:N（一种型材可出现在多个设计元素中）
 </relations>
 </entity>
@@ -190,6 +190,10 @@
   - 接合角度
   - 承载力需求
 </attributes>
+<relations>
+  - Joint → DesignElement: N:N（一个连接点关联两个或多个设计元素）
+  - Joint → Connector: N:1（一个连接点使用一种连接件）
+</relations>
 </entity>
 
 <entity id="E7">
@@ -205,6 +209,9 @@
   - 预估总价
   - 总重量
 </attributes>
+<relations>
+  - BOM → Design: 1:1（一份材料清单对应一个设计方案）
+</relations>
 </entity>
 
 ### 2.2 信息流
@@ -245,7 +252,7 @@
 
 ### 3.2 技术上下文
 - 前端渲染：react-three-fiber（Three.js 的 React 渲染器）
-- CAD 计算：replicad 在 Web Worker 中运行 OpenCascade WASM
+- CAD 计算：replicad 在 Web Worker 中运行 OpenCascade WASM，通过 CadEngine 抽象接口封装调用
 - AI 通信：客户端 → Next.js API Route → Claude API，流式输出 CAD 参数
 - 数据格式：统一使用 JSON Schema 定义型材参数、设计方案、BOM
 - 无后端数据库，所有数据在客户端处理（隐私优先）
@@ -273,6 +280,7 @@
 | 结构安全验证 (F3) | ★★★★★ | 安全相关，不可妥协 |
 | 板材参数库 (E3) | ★★★☆☆ | 辅助功能，MVP 可简化 |
 | Web 编辑器 (F2) | ★★★☆☆ | 重要但复杂度高，可分阶段实现 |
+| 材料清单 (E7) | ★★★★☆ | 用户最终拿到手的采购/加工依据，精度要求高 |
 | 导出功能 (F4) | ★★★★☆ | 用户最终需要的产出物 |
 
 </weights>
